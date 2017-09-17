@@ -18,6 +18,11 @@ namespace MoodBarPatch {
         public static FieldInfo deadColonistTexField;
         public static FieldInfo pawnLabelsCacheField;
 
+        public static Texture2D extremeBreakTex;
+        public static Texture2D majorBreakTex;
+        public static Texture2D minorBreakTex;
+        public static Texture2D noBreakTex;
+
         static Main() {
             var harmony = HarmonyInstance.Create("com.github.bc.rimworld.mod.moodbar");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
@@ -35,6 +40,17 @@ namespace MoodBarPatch {
                     BindingFlags.Static | BindingFlags.NonPublic);
             pawnLabelsCacheField = typeof(ColonistBarColonistDrawer).GetField("pawnLabelsCache",
                 BindingFlags.Instance | BindingFlags.NonPublic);
+            Log.Message("Called Moodbar static initializer");
+            Color red = Color.red;
+            Color orange = new Color(1f, 0.5f, 0.31f, 0.44f);
+            Color yellow = Color.yellow;
+            Color cyan = Color.cyan;
+            red.a = orange.a = yellow.a = cyan.a = 0.44f;
+
+            extremeBreakTex = SolidColorMaterials.NewSolidColorTexture(red);
+            majorBreakTex = SolidColorMaterials.NewSolidColorTexture(orange);
+            minorBreakTex = SolidColorMaterials.NewSolidColorTexture(yellow);
+            noBreakTex = SolidColorMaterials.NewSolidColorTexture(cyan);
         }
     }
 
@@ -79,27 +95,22 @@ namespace MoodBarPatch {
 
                 float statValue = colonist.GetStatValue(StatDefOf.MentalBreakThreshold, true);
                 float currentMoodLevel = colonist.needs.mood.CurLevel;
-                Color moodColor;
 
                 // Extreme break threshold
                 if (currentMoodLevel <= statValue) {
-                    moodColor = Color.red;
+                    GUI.DrawTexture(position, Main.extremeBreakTex);
                 }
                 // Major break threshold
                 else if (currentMoodLevel <= statValue + 0.15f) {
-                    moodColor = new Color(1f, 0.5f, 0.31f);
+                    GUI.DrawTexture(position, Main.majorBreakTex);
                 }
                 // Minor break threshold
                 else if (currentMoodLevel <= statValue + 0.3f) {
-                    moodColor = Color.yellow;
+                    GUI.DrawTexture(position, Main.minorBreakTex);
                 }
                 else {
-                    moodColor = Color.cyan;
+                    GUI.DrawTexture(position, Main.noBreakTex);
                 }
-
-                moodColor.a = 0.44f;
-                Texture2D moodBGTex = SolidColorMaterials.NewSolidColorTexture(moodColor);
-                GUI.DrawTexture(position, moodBGTex);
             }
 
             Rect rect2 = rect.ContractedBy(-2f * colonistBar.Scale);
