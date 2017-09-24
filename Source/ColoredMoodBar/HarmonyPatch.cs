@@ -70,15 +70,6 @@ namespace MoodBarPatch {
         }
 
         public static bool Prefix(ColonistBarColonistDrawer __instance, ref Rect rect, ref Pawn colonist, ref Map pawnMap) {
-            if (rect == null) {
-                Log.Error("Rect is null");
-                return true;
-            }
-            if (pawnMap == null) {
-                Log.Error("pawnMap is null");
-                return true;
-            }
-
             ColonistBar colonistBar = Find.ColonistBar;
             float entryRectAlpha = colonistBar.GetEntryRectAlpha(rect);
             entryRectAlpha = ApplyEntryInAnotherMapAlphaFactor(pawnMap, entryRectAlpha);
