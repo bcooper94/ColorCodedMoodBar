@@ -4,5 +4,5 @@
   <name>Color Coded Mood Bar</name>
   <author>PorqueNoLosDos</author>
   <targetVersion>0.17.1557</targetVersion>
-  <description>Color code each pawn's mood bar within the colonist bar based on their current mood.\n\nRed: extreme mental break threshold\nOrange: major mental break threshold\nYellow: minor mental break threshold\nLight Blue: the pawn is not under any mental break threshold</description>
+  <description>Color code each pawn's mood bar within the colonist bar based on their current mood.\n\nRed: extreme mental break threshold\nOrange: major mental break threshold\nYellow: minor mental break threshold\nLight Blue: the pawn is not under any mental break threshold\n\nUpdates:\n24-9-2017: Removed unnecessary error log messages.</description>
 </ModMetaData>
