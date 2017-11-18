@@ -21,7 +21,9 @@ namespace MoodBarPatch {
         public static Texture2D extremeBreakTex;
         public static Texture2D majorBreakTex;
         public static Texture2D minorBreakTex;
-        public static Texture2D noBreakTex;
+        public static Texture2D neutralTex;
+        public static Texture2D contentTex;
+        public static Texture2D happyTex;
 
         static Main() {
             var harmony = HarmonyInstance.Create("com.github.bc.rimworld.mod.moodbar");
@@ -40,16 +42,21 @@ namespace MoodBarPatch {
                     BindingFlags.Static | BindingFlags.NonPublic);
             pawnLabelsCacheField = typeof(ColonistBarColonistDrawer).GetField("pawnLabelsCache",
                 BindingFlags.Instance | BindingFlags.NonPublic);
+            float colorAlpha = 0.44f;
             Color red = Color.red;
-            Color orange = new Color(1f, 0.5f, 0.31f, 0.44f);
+            Color orange = new Color(1f, 0.5f, 0.31f, colorAlpha);
             Color yellow = Color.yellow;
+            Color neutralColor = new Color(0.87f, 0.96f, 0.79f, colorAlpha);
             Color cyan = Color.cyan;
-            red.a = orange.a = yellow.a = cyan.a = 0.44f;
+            Color happyColor = new Color(0.1f, 0.75f, 0.2f, colorAlpha);
+            red.a = orange.a = yellow.a = cyan.a = colorAlpha;
 
             extremeBreakTex = SolidColorMaterials.NewSolidColorTexture(red);
             majorBreakTex = SolidColorMaterials.NewSolidColorTexture(orange);
             minorBreakTex = SolidColorMaterials.NewSolidColorTexture(yellow);
-            noBreakTex = SolidColorMaterials.NewSolidColorTexture(cyan);
+            neutralTex = SolidColorMaterials.NewSolidColorTexture(neutralColor);
+            contentTex = SolidColorMaterials.NewSolidColorTexture(cyan);
+            happyTex = SolidColorMaterials.NewSolidColorTexture(happyColor);
             LogMessage("ColorCodedMoodBar initialized");
         }
 
@@ -103,8 +110,18 @@ namespace MoodBarPatch {
                 else if (currentMoodLevel <= statValue + 0.3f) {
                     GUI.DrawTexture(position, Main.minorBreakTex);
                 }
+                // Neutral
+                else if (currentMoodLevel <= 0.65f) {
+                    GUI.DrawTexture(position, Main.neutralTex);
+                }
+                // Content
+                else if (currentMoodLevel <= 0.9f) {
+                    GUI.DrawTexture(position, Main.contentTex);
+
+                }
+                // Happy
                 else {
-                    GUI.DrawTexture(position, Main.noBreakTex);
+                    GUI.DrawTexture(position, Main.happyTex);
                 }
             }
 
