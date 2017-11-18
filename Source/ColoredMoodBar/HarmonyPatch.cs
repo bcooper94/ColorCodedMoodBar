@@ -40,7 +40,6 @@ namespace MoodBarPatch {
                     BindingFlags.Static | BindingFlags.NonPublic);
             pawnLabelsCacheField = typeof(ColonistBarColonistDrawer).GetField("pawnLabelsCache",
                 BindingFlags.Instance | BindingFlags.NonPublic);
-            Log.Message("Called Moodbar static initializer");
             Color red = Color.red;
             Color orange = new Color(1f, 0.5f, 0.31f, 0.44f);
             Color yellow = Color.yellow;
@@ -51,6 +50,11 @@ namespace MoodBarPatch {
             majorBreakTex = SolidColorMaterials.NewSolidColorTexture(orange);
             minorBreakTex = SolidColorMaterials.NewSolidColorTexture(yellow);
             noBreakTex = SolidColorMaterials.NewSolidColorTexture(cyan);
+            LogMessage("ColorCodedMoodBar initialized");
+        }
+
+        public static void LogMessage(string text) {
+            Log.Message("[ColorCodedMoodBar] " + text);
         }
     }
 
