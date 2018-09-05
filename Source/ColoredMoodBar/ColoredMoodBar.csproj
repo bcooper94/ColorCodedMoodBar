@@ -67,7 +67,6 @@
   </ProjectExtensions>
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(TargetDir)$(TargetName).dll" "E:\Steam Bibliothek\steamapps\common\RimWorld\Mods\ColorCodedMoodBar\Assemblies\$(TargetName).dll"
-
-</PostBuildEvent>
+"E:\Steam Bibliothek\steamapps\common\RimWorld\RimworldWin64.exe" -quicktest</PostBuildEvent>
   </PropertyGroup>
 </Project>

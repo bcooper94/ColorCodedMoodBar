@@ -90,16 +90,24 @@ namespace MoodBarPatch {
 
             bool flag = (!colonist.Dead) ? Find.Selector.SelectedObjects.Contains(colonist) : Find.Selector.SelectedObjects.Contains(colonist.Corpse);
             Color color = new Color(1f, 1f, 1f, entryRectAlpha);
+
+            //pawn image background size
+            Rect pawnBackgroundSize = rect.ExpandedBy(2.5f);
+            //pawnBackgroundSize.width += 5f;
+            //pawn image size
+            const float newSizeVal = 0f;
+
+
             GUI.color = color;
-            GUI.DrawTexture(rect, ColonistBar.BGTex);
+            GUI.DrawTexture(pawnBackgroundSize, ColonistBar.BGTex);
 
             if (colonist.needs != null && colonist.needs.mood != null) {
-                Rect position = rect.ContractedBy(2f);
+                Rect position = pawnBackgroundSize.ContractedBy(2f);
                 float num = position.height * colonist.needs.mood.CurLevelPercentage;
                 position.yMin = position.yMax - num;
                 position.height = num;
 
-
+                
                 float statValue = colonist.GetStatValue(StatDefOf.MentalBreakThreshold, true);
 
                 float currentMoodLevel = colonist.needs.mood.CurLevel;
@@ -133,7 +141,8 @@ namespace MoodBarPatch {
 
             }
 
-            Rect rect2 = rect.ContractedBy(-2f * colonistBar.Scale);
+            //Selection rectangle size
+            Rect rect2 = rect.ContractedBy(-6f * colonistBar.Scale);
 
             if (flag && !WorldRendererUtility.WorldRenderedNow) {
                 Main.drawSelectionOverlayOnGUIMethod.Invoke(__instance, new object[] { colonist, rect2 });
@@ -143,10 +152,19 @@ namespace MoodBarPatch {
 
             }
 
+            
+            Rect pawnTexturePosition = __instance.GetPawnTextureRect(new Vector2(rect.x, rect.y)).ContractedBy(newSizeVal);//(Rect) Main.getPawnTextureRectMethod.Invoke(__instance, new object[] { rect.x, rect.y });
+            pawnTexturePosition.y += newSizeVal-1f;
 
+            if (pawnBackgroundSize.width % 2 == 0) {
+                pawnTexturePosition.x -= 1f;
+                //Log.Message("[ColorCodedMoodBar] EVEN " + pawnBackgroundSize.width);
+            } else {
+                //Log.Message("[ColorCodedMoodBar] UNEVEN " + pawnBackgroundSize.width);
+                pawnTexturePosition.x -= 0.25f;
+            }
 
-            Rect pawnTexturePosition = __instance.GetPawnTextureRect(new Vector2(rect.x, rect.y));//(Rect) Main.getPawnTextureRectMethod.Invoke(__instance, new object[] { rect.x, rect.y });
-
+            
 
             GUI.DrawTexture(pawnTexturePosition, PortraitsCache.Get(colonist, ColonistBarColonistDrawer.PawnTextureSize,
                 ColonistBarColonistDrawer.PawnTextureCameraOffset,
