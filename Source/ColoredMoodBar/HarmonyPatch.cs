@@ -28,6 +28,7 @@ namespace MoodBarPatch {
         static Main() {
             var harmony = HarmonyInstance.Create("com.github.restive2k12.rimworld.mod.moodbar");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
+            
             drawSelectionOverlayOnGUIMethod = typeof(ColonistBarColonistDrawer).GetMethod("DrawSelectionOverlayOnGUI",
                     BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[] { typeof(Pawn), typeof(Rect) }, null);
             drawCaravanSelectionOverlayOnGUIMethod = typeof(ColonistBarColonistDrawer).GetMethod("DrawCaravanSelectionOverlayOnGUI",
@@ -47,7 +48,7 @@ namespace MoodBarPatch {
             Color red = Color.red;
             Color orange = new Color(1f, 0.5f, 0.31f, colorAlpha);
             Color yellow = Color.yellow;
-            Color neutralColor = new Color(0.87f, 0.96f, 0.79f, colorAlpha);
+            Color neutralColor = new Color(0.77f, 0.96f, 0.69f, colorAlpha);
             Color cyan = Color.cyan;
             Color happyColor = new Color(0.1f, 0.75f, 0.2f, colorAlpha);
             red.a = orange.a = yellow.a = cyan.a = colorAlpha;
@@ -66,25 +67,111 @@ namespace MoodBarPatch {
         }
     }
 
-    [HarmonyPatch(typeof(ColonistBarColonistDrawer), "DrawColonist")]
+    [HarmonyPatch(typeof(ColonistBarColonistDrawer))]
+    [HarmonyPatch("DrawColonist")]
+    [HarmonyPatch(new Type[ ] { typeof(Rect) , typeof(Pawn) , typeof(Map) , typeof(bool) , typeof(bool) } )]
     public class MoodPatch {
         private static float ApplyEntryInAnotherMapAlphaFactor(Map map, float alpha) {
-            //Unnecessary code?
-            /*if (map == null) {
+            
+            if (map == null) {
                 if (!WorldRendererUtility.WorldRenderedNow) {
                     alpha = Mathf.Min(alpha, 0.4f);
                 }
             }
             
-            else if (map != Find.VisibleMap || WorldRendererUtility.WorldRenderedNow) {
+            else if (map != Find.CurrentMap || WorldRendererUtility.WorldRenderedNow) {
                 alpha = Mathf.Min(alpha, 0.4f);
-            }*/
+            }
 
-            return alpha;// Mathf.Min(alpha, 0.4f); 
+            return alpha;
         }
 
-        public static bool Prefix(ColonistBarColonistDrawer __instance, ref Rect rect, ref Pawn colonist, ref Map pawnMap) {
+        public static bool Prefix(ColonistBarColonistDrawer __instance, ref Rect rect, ref Pawn colonist, ref Map pawnMap, ref bool highlight, ref bool reordering) {
             ColonistBar colonistBar = Find.ColonistBar;
+            float alpha = ApplyEntryInAnotherMapAlphaFactor(pawnMap, colonistBar.GetEntryRectAlpha(rect));
+
+            Rect pawnBackgroundSize = rect.ExpandedBy(2.5f);
+
+            if (reordering) {
+                alpha *= 0.5f;
+            }
+            Color color = new Color(1f, 1f, 1f, alpha);
+            GUI.color = color;
+            GUI.DrawTexture(rect, ColonistBar.BGTex);
+            if (colonist.needs != null && colonist.needs.mood != null) {
+                Rect position = pawnBackgroundSize.ContractedBy(2f);
+                float value = position.height * colonist.needs.mood.CurLevelPercentage;
+                position.yMin = position.yMax - value;
+                position.height = value;
+
+
+                float statValue = colonist.GetStatValue(StatDefOf.MentalBreakThreshold, true);
+
+                float currentMoodLevel = colonist.needs.mood.CurLevel;
+
+
+                // Extreme break threshold
+                if (currentMoodLevel <= statValue) {
+                    GUI.DrawTexture(position, Main.extremeBreakTex);
+                }
+                // Major break threshold
+                else if (currentMoodLevel <= statValue + 0.15f) {
+                    GUI.DrawTexture(position, Main.majorBreakTex);
+                }
+                // Minor break threshold
+                else if (currentMoodLevel <= statValue + 0.3f) {
+                    GUI.DrawTexture(position, Main.minorBreakTex);
+                }
+                // Neutral
+                else if (currentMoodLevel <= 0.65f) {
+                    GUI.DrawTexture(position, Main.neutralTex);
+                }
+                // Content
+                else if (currentMoodLevel <= 0.9f) {
+                    GUI.DrawTexture(position, Main.contentTex);
+
+                }
+                // Happy
+                else {
+                    GUI.DrawTexture(position, Main.happyTex);
+                }
+
+            }
+            if (highlight) {
+                int thickness = (rect.width > 22f) ? 3 : 2;
+                GUI.color = Color.white;
+                Widgets.DrawBox(rect, thickness);
+                GUI.color = color;
+            }
+            Rect rect2 = rect.ContractedBy(-2f * colonistBar.Scale);
+            bool flag = (!colonist.Dead) ? Find.Selector.SelectedObjects.Contains(colonist) : Find.Selector.SelectedObjects.Contains(colonist.Corpse);
+            if (flag && !WorldRendererUtility.WorldRenderedNow) {
+                Main.drawSelectionOverlayOnGUIMethod.Invoke(__instance, new object[] { colonist, rect2 });
+            } else if (WorldRendererUtility.WorldRenderedNow && colonist.IsCaravanMember() && Find.WorldSelector.IsSelected(colonist.GetCaravan())) {
+                //this.DrawCaravanSelectionOverlayOnGUI(colonist.GetCaravan(), rect2);
+                Main.drawCaravanSelectionOverlayOnGUIMethod.Invoke(__instance, new object[] { colonist.GetCaravan(), rect2 });
+            }
+            //GUI.DrawTexture(this.GetPawnTextureRect(rect.position), PortraitsCache.Get(colonist, ColonistBarColonistDrawer.PawnTextureSize, ColonistBarColonistDrawer.PawnTextureCameraOffset, 1.28205f));
+
+            GUI.DrawTexture(__instance.GetPawnTextureRect(rect.position), PortraitsCache.Get(colonist, ColonistBarColonistDrawer.PawnTextureSize, ColonistBarColonistDrawer.PawnTextureCameraOffset, 1.28205f));
+
+            
+
+
+            GUI.color = new Color(1f, 1f, 1f, alpha * 0.8f);
+            //__instance.DrawIcons(rect, colonist);
+            Main.drawIconsMethod.Invoke(__instance, new object[] { rect, colonist });
+            GUI.color = color;
+            if (colonist.Dead) {
+                GUI.DrawTexture(rect, (Texture)Main.deadColonistTexField.GetValue(__instance));
+            }
+            float num3 = 4f * colonistBar.Scale;
+            Vector2 pos = new Vector2(rect.center.x, rect.yMax - num3);
+            GenMapUI.DrawPawnLabel(colonist, pos, alpha, rect.width + colonistBar.SpaceBetweenColonistsHorizontal - 2f, (Dictionary<string, string>)Main.pawnLabelsCacheField.GetValue(__instance), GameFont.Tiny, true, true);
+            Text.Font = GameFont.Small;
+            GUI.color = Color.white;
+
+            /*ColonistBar colonistBar = Find.ColonistBar;
             float entryRectAlpha = colonistBar.GetEntryRectAlpha(rect);
             entryRectAlpha = ApplyEntryInAnotherMapAlphaFactor(pawnMap, entryRectAlpha);
 
@@ -187,7 +274,7 @@ namespace MoodBarPatch {
                 (Dictionary<string, string>)Main.pawnLabelsCacheField.GetValue(__instance),
                 GameFont.Tiny, true, true);
             Text.Font = GameFont.Small;
-            GUI.color = Color.white;
+            GUI.color = Color.white;*/
 
             return false;
         }
