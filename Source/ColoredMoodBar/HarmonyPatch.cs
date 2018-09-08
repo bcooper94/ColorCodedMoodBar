@@ -144,22 +144,15 @@ namespace MoodBarPatch {
                 GUI.color = color;
             }
             Rect rect2 = rect.ContractedBy(-2f * colonistBar.Scale);
-            bool flag = (!colonist.Dead) ? Find.Selector.SelectedObjects.Contains(colonist) : Find.Selector.SelectedObjects.Contains(colonist.Corpse);
-            if (flag && !WorldRendererUtility.WorldRenderedNow) {
+            bool notdeadandselected = (!colonist.Dead) ? Find.Selector.SelectedObjects.Contains(colonist) : Find.Selector.SelectedObjects.Contains(colonist.Corpse);
+            if (notdeadandselected && !WorldRendererUtility.WorldRenderedNow) {
                 Main.drawSelectionOverlayOnGUIMethod.Invoke(__instance, new object[] { colonist, rect2 });
             } else if (WorldRendererUtility.WorldRenderedNow && colonist.IsCaravanMember() && Find.WorldSelector.IsSelected(colonist.GetCaravan())) {
-                //this.DrawCaravanSelectionOverlayOnGUI(colonist.GetCaravan(), rect2);
                 Main.drawCaravanSelectionOverlayOnGUIMethod.Invoke(__instance, new object[] { colonist.GetCaravan(), rect2 });
             }
-            //GUI.DrawTexture(this.GetPawnTextureRect(rect.position), PortraitsCache.Get(colonist, ColonistBarColonistDrawer.PawnTextureSize, ColonistBarColonistDrawer.PawnTextureCameraOffset, 1.28205f));
-
             GUI.DrawTexture(__instance.GetPawnTextureRect(rect.position), PortraitsCache.Get(colonist, ColonistBarColonistDrawer.PawnTextureSize, ColonistBarColonistDrawer.PawnTextureCameraOffset, 1.28205f));
 
-            
-
-
             GUI.color = new Color(1f, 1f, 1f, alpha * 0.8f);
-            //__instance.DrawIcons(rect, colonist);
             Main.drawIconsMethod.Invoke(__instance, new object[] { rect, colonist });
             GUI.color = color;
             if (colonist.Dead) {
@@ -170,111 +163,6 @@ namespace MoodBarPatch {
             GenMapUI.DrawPawnLabel(colonist, pos, alpha, rect.width + colonistBar.SpaceBetweenColonistsHorizontal - 2f, (Dictionary<string, string>)Main.pawnLabelsCacheField.GetValue(__instance), GameFont.Tiny, true, true);
             Text.Font = GameFont.Small;
             GUI.color = Color.white;
-
-            /*ColonistBar colonistBar = Find.ColonistBar;
-            float entryRectAlpha = colonistBar.GetEntryRectAlpha(rect);
-            entryRectAlpha = ApplyEntryInAnotherMapAlphaFactor(pawnMap, entryRectAlpha);
-
-            bool flag = (!colonist.Dead) ? Find.Selector.SelectedObjects.Contains(colonist) : Find.Selector.SelectedObjects.Contains(colonist.Corpse);
-            Color color = new Color(1f, 1f, 1f, entryRectAlpha);
-
-            //pawn image background size
-            Rect pawnBackgroundSize = rect.ExpandedBy(2.5f);
-            //pawnBackgroundSize.width += 5f;
-            //pawn image size
-            const float newSizeVal = 0f;
-
-
-            GUI.color = color;
-            GUI.DrawTexture(pawnBackgroundSize, ColonistBar.BGTex);
-
-            if (colonist.needs != null && colonist.needs.mood != null) {
-                Rect position = pawnBackgroundSize.ContractedBy(2f);
-                float num = position.height * colonist.needs.mood.CurLevelPercentage;
-                position.yMin = position.yMax - num;
-                position.height = num;
-
-                
-                float statValue = colonist.GetStatValue(StatDefOf.MentalBreakThreshold, true);
-
-                float currentMoodLevel = colonist.needs.mood.CurLevel;
-
-
-                // Extreme break threshold
-                if (currentMoodLevel <= statValue) {
-                    GUI.DrawTexture(position, Main.extremeBreakTex);
-                }
-                // Major break threshold
-                else if (currentMoodLevel <= statValue + 0.15f) {
-                    GUI.DrawTexture(position, Main.majorBreakTex);
-                }
-                // Minor break threshold
-                else if (currentMoodLevel <= statValue + 0.3f) {
-                    GUI.DrawTexture(position, Main.minorBreakTex);
-                }
-                // Neutral
-                else if (currentMoodLevel <= 0.65f) {
-                    GUI.DrawTexture(position, Main.neutralTex);
-                }
-                // Content
-                else if (currentMoodLevel <= 0.9f) {
-                    GUI.DrawTexture(position, Main.contentTex);
-
-                }
-                // Happy
-                else {
-                    GUI.DrawTexture(position, Main.happyTex);
-                }
-
-            }
-
-            //Selection rectangle size
-            Rect rect2 = rect.ContractedBy(-6f * colonistBar.Scale);
-
-            if (flag && !WorldRendererUtility.WorldRenderedNow) {
-                Main.drawSelectionOverlayOnGUIMethod.Invoke(__instance, new object[] { colonist, rect2 });
-
-            } else if (WorldRendererUtility.WorldRenderedNow && colonist.IsCaravanMember() && Find.WorldSelector.IsSelected(colonist.GetCaravan())) {
-                Main.drawCaravanSelectionOverlayOnGUIMethod.Invoke(__instance, new object[] { colonist.GetCaravan(), rect2 });
-
-            }
-
-            
-            Rect pawnTexturePosition = __instance.GetPawnTextureRect(new Vector2(rect.x, rect.y)).ContractedBy(newSizeVal);//(Rect) Main.getPawnTextureRectMethod.Invoke(__instance, new object[] { rect.x, rect.y });
-            pawnTexturePosition.y += newSizeVal-1f;
-
-            if (pawnBackgroundSize.width % 2 == 0) {
-                pawnTexturePosition.x -= 1f;
-                //Log.Message("[ColorCodedMoodBar] EVEN " + pawnBackgroundSize.width);
-            } else {
-                //Log.Message("[ColorCodedMoodBar] UNEVEN " + pawnBackgroundSize.width);
-                pawnTexturePosition.x -= 0.25f;
-            }
-
-            
-
-            GUI.DrawTexture(pawnTexturePosition, PortraitsCache.Get(colonist, ColonistBarColonistDrawer.PawnTextureSize,
-                ColonistBarColonistDrawer.PawnTextureCameraOffset,
-                1.28205f));
-
-
-            GUI.color = new Color(1f, 1f, 1f, entryRectAlpha * 0.8f);
-            Main.drawIconsMethod.Invoke(__instance, new object[] { rect, colonist });
-
-            GUI.color = color;
-
-            if (colonist.Dead) {
-                GUI.DrawTexture(rect, (Texture)Main.deadColonistTexField.GetValue(null));
-            }
-
-            float num2 = 4f * colonistBar.Scale;
-            Vector2 pos = new Vector2(rect.center.x, rect.yMax - num2);
-            GenMapUI.DrawPawnLabel(colonist, pos, entryRectAlpha,
-                rect.width + colonistBar.SpaceBetweenColonistsHorizontal - 2f,
-                (Dictionary<string, string>)Main.pawnLabelsCacheField.GetValue(__instance),
-                GameFont.Tiny, true, true);
-            Text.Font = GameFont.Small;
-            GUI.color = Color.white;*/
 
             return false;
         }
