@@ -9,6 +9,7 @@ A red mood bar indicates the pawn is at or under their extreme mental break thre
 - Sep 16 2017: Initial release on GitHub and closed release on Steam
 - Sep 17 2017: Open release on Steam
 - Nov 18 2017: Updated for RimWord version 0.18.1722, and added content and happy colors.
+- May 4 2019: Updated for RimWorld version 1.0.2231.
 
 ## Author/Mod Team
 - PorqueNoLosDos
