@@ -94,9 +94,6 @@ namespace MoodBarPatch {
                 entryRectAlpha *= 0.5f;
             }
 
-            bool flag = (!colonist.Dead) ?
-                Find.Selector.SelectedObjects.Contains(colonist) :
-                Find.Selector.SelectedObjects.Contains(colonist.Corpse);
             Color color = new Color(1f, 1f, 1f, entryRectAlpha);
             GUI.color = color;
 
@@ -121,7 +118,10 @@ namespace MoodBarPatch {
 
             Rect rect2 = rect.ContractedBy(-2f * colonistBar.Scale);
 
-            if (flag && !WorldRendererUtility.WorldRenderedNow) {
+            bool isColonistSelected = colonist.Dead ?
+                Find.Selector.SelectedObjects.Contains(colonist.Corpse) :
+                Find.Selector.SelectedObjects.Contains(colonist);
+            if (isColonistSelected && !WorldRendererUtility.WorldRenderedNow) {
                 Main.drawSelectionOverlayOnGUIMethod.Invoke(__instance, new object[] { colonist, rect2 });
             }
             else if (WorldRendererUtility.WorldRenderedNow && colonist.IsCaravanMember() && Find.WorldSelector.IsSelected(colonist.GetCaravan())) {
