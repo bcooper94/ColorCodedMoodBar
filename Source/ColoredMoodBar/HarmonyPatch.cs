@@ -89,6 +89,11 @@ namespace MoodBarPatch {
             ColonistBar colonistBar = Find.ColonistBar;
             float entryRectAlpha = colonistBar.GetEntryRectAlpha(rect);
             entryRectAlpha = ApplyEntryInAnotherMapAlphaFactor(pawnMap, entryRectAlpha);
+
+            if (reordering) {
+                entryRectAlpha *= 0.5f;
+            }
+
             bool flag = (!colonist.Dead) ?
                 Find.Selector.SelectedObjects.Contains(colonist) :
                 Find.Selector.SelectedObjects.Contains(colonist.Corpse);
