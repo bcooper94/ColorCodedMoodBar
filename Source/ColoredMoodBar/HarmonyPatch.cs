@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using RimWorld;
 using RimWorld.Planet;
-using Harmony;
+using HarmonyLib;
 using Verse;
 using UnityEngine;
 using System.Collections.Generic;
@@ -29,7 +29,7 @@ namespace MoodBarPatch {
 
         static Main() {
             loggedMessages = new Dictionary<string, bool>();
-            var harmony = HarmonyInstance.Create("com.github.bc.rimworld.mod.moodbar");
+            var harmony = new Harmony("com.github.bc.rimworld.mod.moodbar");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             drawSelectionOverlayOnGUIMethod = typeof(ColonistBarColonistDrawer).GetMethod("DrawSelectionOverlayOnGUI",
@@ -60,7 +60,7 @@ namespace MoodBarPatch {
             neutralTex = SolidColorMaterials.NewSolidColorTexture(neutralColor);
             contentTex = SolidColorMaterials.NewSolidColorTexture(cyan);
             happyTex = SolidColorMaterials.NewSolidColorTexture(happyColor);
-            LogMessage("ColorCodedMoodBar initialized");
+            LogMessage("ColorCodedMoodBar initialized for RimWorld v1.1");
         }
 
         public static void LogMessage(string text) {

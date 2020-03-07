@@ -5,8 +5,15 @@
   <author>PorqueNoLosDos</author>
   <packageId>PorqueNoLosDos.ColorCodedMoodBar</packageId>
   <supportedVersions>
-    <li>1.0</li>
     <li>1.1</li>
   </supportedVersions>
-  <description>Color code each pawn's mood bar within the colonist bar based on their current mood.\n\nRed: extreme mental break threshold\nOrange: major mental break threshold\nYellow: minor mental break threshold\nGray: neutral mood\nLight Blue: content\nGreen: happy\n\nUpdates:\n24-9-2017: Removed unnecessary error log messages.\n18-11-2017: Updated for RimWord version 0.18.1722, and added content and happy mood colors.\n4-5-2019: Updated for RimWorld version 1.0.2231.</description>
+  <description>Color code each pawn's mood bar within the colonist bar based on their current mood.\n\nRed: extreme mental break threshold\nOrange: major mental break threshold\nYellow: minor mental break threshold\nGray: neutral mood\nLight Blue: content\nGreen: happy\n\nUpdates:\n24-9-2017: Removed unnecessary error log messages.\n18-11-2017: Updated for RimWorld version 0.18.1722, and added content and happy mood colors.\n4-5-2019: Updated for RimWorld version 1.0.2231.\n24-2-2020: Updated for RimWorld version 1.1.</description>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+  </modDependencies>
 </ModMetaData>
