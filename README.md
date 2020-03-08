@@ -3,13 +3,15 @@ A RimWorld mod to color code each pawn's mood bar within the colonist bar based 
 A red mood bar indicates the pawn is at or under their extreme mental break threshold, orange indicates the major mental break threshold, yellow indicates the minor mental break threshold, and blue indicates the pawn is not under any mental break threshold.
 
 ## Known Bugs/Limitations/Requirements:
-- None
+- Requires the Harmony mod as of RimWorld v1.1
 
 ## Updates
 - Sep 16 2017: Initial release on GitHub and closed release on Steam
 - Sep 17 2017: Open release on Steam
 - Nov 18 2017: Updated for RimWord version 0.18.1722, and added content and happy colors.
 - May 4 2019: Updated for RimWorld version 1.0.2231.
+- February 24 2020: Updated for RimWorld version 1.1.
+- rch 7 2020: Added Harmony as a mod dependency to fix an issue causing the game to crash when this mod was loaded.
 
 ## Author/Mod Team
 - PorqueNoLosDos
