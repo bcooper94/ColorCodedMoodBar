@@ -16,12 +16,16 @@ A red mood bar indicates the pawn is at or under their extreme mental break thre
 - fyarn
 
 ## Download
-- Github (with Source): https://github.com/bcooper94/ColorCodedMoodBar
-- Direct: https://github.com/bcooper94/ColorCodedMoodBar/archive/master.zip
 - Steam: https://steamcommunity.com/sharedfiles/filedetails/?id=1136819681
+- Direct:
+   - RimWorld 1.1: https://github.com/bcooper94/ColorCodedMoodBar/releases/download/v1.3/ColorCodedMoodBar-RimWorld-1_1.zip
+   - RimWorld 1.0: https://github.com/bcooper94/ColorCodedMoodBar/releases/download/v1.2/ColorCodedMoodBar-RimWorld-1_0.zip
+   - RimWorld Alpha 0.18.1722: https://github.com/bcooper94/ColorCodedMoodBar/archive/v1.1-Alpha-0.18.1722.zip
+   - RimWorld Alpha 0.17.1557: https://github.com/bcooper94/ColorCodedMoodBar/archive/v1.0-Alpha-0.17.1557.zip
 
 ## How to install (non-Steam users):
-- Unzip the contents and place them in your RimWorld/Mods folder.
+- Download the direct release for your version of RimWorld
+- Unzip the contents and place them into a ColorCodedMoodBar folder within your RimWorld/Mods folder.
 - Activate the mod in the mod menu in the game.
 - No need for a new save.
 
