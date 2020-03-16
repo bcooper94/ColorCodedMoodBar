@@ -6,6 +6,7 @@ using Verse;
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using Verse.AI;
 
 namespace MoodBarPatch {
     [StaticConstructorOnStartup]
@@ -153,36 +154,22 @@ namespace MoodBarPatch {
         }
 
         private static Texture2D getMoodTexture(ref Pawn colonist) {
-            float statValue = colonist.GetStatValue(StatDefOf.MentalBreakThreshold, true);
             float currentMoodLevel = colonist.needs.mood.CurLevel;
-            Texture2D moodTexture = null;
+            MentalBreaker pawnState = colonist.mindState.mentalBreaker;
 
-            // Extreme break threshold
-            if (currentMoodLevel <= statValue) {
-                moodTexture = Main.extremeBreakTex;
+            if (pawnState.BreakExtremeIsImminent) {
+                return Main.extremeBreakTex;
+            } else if (pawnState.BreakMajorIsImminent) {
+                return Main.majorBreakTex;
+            } else if (pawnState.BreakMinorIsImminent) {
+                return Main.minorBreakTex;
+            } else if (pawnState.CurMood < .65f) {
+                return Main.neutralTex;
+            } else if (pawnState.CurMood < .9f) {
+                return Main.contentTex;
+            } else {
+                return Main.happyTex;
             }
-            // Major break threshold
-            else if (currentMoodLevel <= statValue + 0.15f) {
-                moodTexture = Main.majorBreakTex;
-            }
-            // Minor break threshold
-            else if (currentMoodLevel <= statValue + 0.3f) {
-                moodTexture = Main.minorBreakTex;
-            }
-            // Neutral
-            else if (currentMoodLevel <= 0.65f) {
-                moodTexture = Main.neutralTex;
-            }
-            // Content
-            else if (currentMoodLevel <= 0.9f) {
-                moodTexture = Main.contentTex;
-            }
-            // Happy
-            else {
-                moodTexture = Main.happyTex;
-            }
-
-            return moodTexture;
         }
     }
 }
