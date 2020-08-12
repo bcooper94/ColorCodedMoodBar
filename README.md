@@ -21,6 +21,7 @@ A red mood bar indicates the pawn is at or under their extreme mental break thre
 ## Download
 - Steam: https://steamcommunity.com/sharedfiles/filedetails/?id=1136819681
 - Direct:
+   - RimWorld 1.2: https://github.com/bcooper94/ColorCodedMoodBar/releases/download/v1.4/ColorCodedMoodBar-RimWorld-1_2.zip
    - RimWorld 1.1: https://github.com/bcooper94/ColorCodedMoodBar/releases/download/v1.3/ColorCodedMoodBar-RimWorld-1_1.zip
    - RimWorld 1.0: https://github.com/bcooper94/ColorCodedMoodBar/releases/download/v1.2/ColorCodedMoodBar-RimWorld-1_0.zip
    - RimWorld Alpha 0.18.1722: https://github.com/bcooper94/ColorCodedMoodBar/archive/v1.1-Alpha-0.18.1722.zip
