@@ -12,6 +12,7 @@ A red mood bar indicates the pawn is at or under their extreme mental break thre
 - May 4 2019: Updated for RimWorld version 1.0.2231.
 - February 24 2020: Updated for RimWorld version 1.1.
 - March 7 2020: Added Harmony as a mod dependency to fix an issue causing the game to crash when this mod was loaded.
+- August 11 2020: Updated for RimWorld version 1.2.
 
 ## Author/Mod Team
 - PorqueNoLosDos
