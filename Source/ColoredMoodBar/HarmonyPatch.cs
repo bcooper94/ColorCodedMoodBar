@@ -130,7 +130,7 @@ namespace MoodBarPatch {
 
             Rect pawnTexturePosition = __instance.GetPawnTextureRect(new Vector2(rect.x, rect.y));
 
-            GUI.DrawTexture(pawnTexturePosition, PortraitsCache.Get(colonist, ColonistBarColonistDrawer.PawnTextureSize,
+            GUI.DrawTexture(pawnTexturePosition, PortraitsCache.Get(colonist, ColonistBarColonistDrawer.PawnTextureSize, Rot4.South,
                 ColonistBarColonistDrawer.PawnTextureCameraOffset, 1.28205f));
             GUI.color = new Color(1f, 1f, 1f, entryRectAlpha * 0.8f);
             Main.drawIconsMethod.Invoke(__instance, new object[] { rect, colonist });
