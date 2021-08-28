@@ -13,6 +13,7 @@ A red mood bar indicates the pawn is at or under their extreme mental break thre
 - February 24 2020: Updated for RimWorld version 1.1.
 - March 7 2020: Added Harmony as a mod dependency to fix an issue causing the game to crash when this mod was loaded.
 - August 11 2020: Updated for RimWorld version 1.2.
+- August 28 2021: Updated for RimWorld version 1.3.
 
 ## Author/Mod Team
 - PorqueNoLosDos
@@ -21,6 +22,7 @@ A red mood bar indicates the pawn is at or under their extreme mental break thre
 ## Download
 - Steam: https://steamcommunity.com/sharedfiles/filedetails/?id=1136819681
 - Direct:
+   - RimWorld 1.3: https://github.com/bcooper94/ColorCodedMoodBar/releases/download/v1.5/ColorCodedMoodBar-RimWorld-1_3.zip
    - RimWorld 1.2: https://github.com/bcooper94/ColorCodedMoodBar/releases/download/v1.4/ColorCodedMoodBar-RimWorld-1_2.zip
    - RimWorld 1.1: https://github.com/bcooper94/ColorCodedMoodBar/releases/download/v1.3/ColorCodedMoodBar-RimWorld-1_1.zip
    - RimWorld 1.0: https://github.com/bcooper94/ColorCodedMoodBar/releases/download/v1.2/ColorCodedMoodBar-RimWorld-1_0.zip
