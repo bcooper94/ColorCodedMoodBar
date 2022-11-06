@@ -17,6 +17,7 @@ namespace MoodBarPatch {
         public static FieldInfo deadColonistTexField;
         public static FieldInfo pawnLabelsCacheField;
 
+        public static Texture2D whiteTex;
         public static Texture2D extremeBreakTex;
         public static Texture2D majorBreakTex;
         public static Texture2D minorBreakTex;
@@ -46,14 +47,17 @@ namespace MoodBarPatch {
                 BindingFlags.Instance | BindingFlags.NonPublic);
 
             float colorAlpha = 0.44f;
+            Color white = Color.white;
             Color red = Color.red;
             Color orange = new Color(1f, 0.5f, 0.31f, colorAlpha);
             Color yellow = Color.yellow;
             Color neutralColor = new Color(0.87f, 0.96f, 0.79f, colorAlpha);
             Color cyan = Color.cyan;
             Color happyColor = new Color(0.1f, 0.75f, 0.2f, colorAlpha);
+            white.a = 1f;
             red.a = orange.a = yellow.a = cyan.a = colorAlpha;
 
+            whiteTex = SolidColorMaterials.NewSolidColorTexture(white);
             extremeBreakTex = SolidColorMaterials.NewSolidColorTexture(red);
             majorBreakTex = SolidColorMaterials.NewSolidColorTexture(orange);
             minorBreakTex = SolidColorMaterials.NewSolidColorTexture(yellow);
@@ -102,11 +106,21 @@ namespace MoodBarPatch {
             if (colonist.needs != null && colonist.needs.mood != null) {
                 Rect position = rect.ContractedBy(2f);
                 float num = position.height * colonist.needs.mood.CurLevelPercentage;
+                Rect instantLevel = new Rect(
+                    rect.x, 
+                    position.yMax - ((position.height + 1f) * colonist.needs.mood.CurInstantLevelPercentage),
+                    rect.width, 
+                    1f
+                );
+
                 position.yMin = position.yMax - num;
                 position.height = num;
 
                 Texture2D moodTexture = getMoodTexture(ref colonist);
                 GUI.DrawTexture(position, moodTexture);
+
+                // Always show where the mood is going in white.
+                GUI.DrawTexture(instantLevel, Main.whiteTex);
             }
 
             if (highlight) {
